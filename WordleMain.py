@@ -1,4 +1,5 @@
 import pygame as p
+import WordleEngine
 
 
 p.init()
@@ -20,6 +21,9 @@ def main():
     #initialize with just a white screen
     screen.fill(p.Color("white"))
 
+    #holds gamestate of the game at any given point
+    gs = WordleEngine.GameState(SQ_NUM, ROW_NUM)
+
     #continue running game until it is quitted
     running = True
     while running:
@@ -30,18 +34,27 @@ def main():
                 running = False
         # Set max FPS
         clock.tick(MAX_FPS)
-        drawBoard(screen)
+        drawBoard(screen, gs)
         #display the screen as it is now
         p.display.flip()
 
 
-def drawBoard(screen):
+def drawBoard(screen, gs):
     #colors of backgound for squares: white for initial color, grey for letter not in word, yellow for wrong place, green for correct letter and position
     global colors
-    colors = ["white", "grey", "yellow", "green"]
-    for x in range(SQ_NUM):
-        for y in range(ROW_NUM):
-            screen.blit(p.transform.scale(p.image.load("images/blankSquare.png"), (SQ_SIZE, SQ_SIZE)),p.Rect(x*SQ_SIZE,y*SQ_SIZE,SQ_SIZE,SQ_SIZE))
+    colors = {"_": "white", "a": "gray", "y": "yellow", "e": "springgreen4"}
+
+    # loads in image of entry square
+    square_surface = p.transform.scale(p.image.load("images/blankSquare.png"), (SQ_SIZE, SQ_SIZE))
+    for row in range(ROW_NUM):
+        for sq in range(SQ_NUM):
+            #create surface with appropriate color for square background
+            square_color_surface = p.Surface((SQ_SIZE, SQ_SIZE))
+            square_color_surface.fill(p.Color(colors[gs.board[row][sq][0]]))
+
+            # surface of outline of square
+            screen.blit(square_color_surface,p.Rect(sq*SQ_SIZE,row*SQ_SIZE,SQ_SIZE,SQ_SIZE))
+            screen.blit(square_surface,p.Rect(sq*SQ_SIZE,row*SQ_SIZE,SQ_SIZE,SQ_SIZE))
     
 if __name__ == "__main__":
     main()
