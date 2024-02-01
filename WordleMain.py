@@ -43,9 +43,12 @@ def drawBoard(screen, gs):
     #colors of backgound for squares: white for initial color, grey for letter not in word, yellow for wrong place, green for correct letter and position
     global colors
     colors = {"_": "white", "a": "gray", "y": "yellow", "e": "springgreen4"}
-
+    
     # loads in image of entry square
     square_surface = p.transform.scale(p.image.load("images/blankSquare.png"), (SQ_SIZE, SQ_SIZE))
+
+    
+
     for row in range(ROW_NUM):
         for sq in range(SQ_NUM):
             #create surface with appropriate color for square background
@@ -55,6 +58,19 @@ def drawBoard(screen, gs):
             # surface of outline of square
             screen.blit(square_color_surface,p.Rect(sq*SQ_SIZE,row*SQ_SIZE,SQ_SIZE,SQ_SIZE))
             screen.blit(square_surface,p.Rect(sq*SQ_SIZE,row*SQ_SIZE,SQ_SIZE,SQ_SIZE))
+            
+            # move to next square if no text entry
+            if gs.board[row][sq] == "__":
+                continue
+            # set font for text
+            font = p.font.SysFont("Helvitca",SQ_SIZE, True, False)
+            # create text that will be displayed
+            textObject = font.render(gs.board[row][sq][1].upper(),0, p.Color("Black"))
+            # create rect on appropriate square and center it in that square
+            textLocation = p.Rect(sq*SQ_SIZE,row*SQ_SIZE,SQ_SIZE,SQ_SIZE).move(SQ_SIZE/2 - textObject.get_width()/2, SQ_SIZE/2 - textObject.get_height()/2)
+            screen.blit(textObject,textLocation)
+
+
     
 if __name__ == "__main__":
     main()
