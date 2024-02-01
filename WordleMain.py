@@ -33,7 +33,10 @@ def main():
             if e.type == p.QUIT:
                 running = False
             elif e.type == p.KEYDOWN:
-                gs.enterLetter(e.unicode)
+                if e.key == p.K_BACKSPACE:
+                    gs.deleteLetter()
+                else:
+                    gs.enterLetter(e.unicode)
         # Set max FPS
         clock.tick(MAX_FPS)
         drawBoard(screen, gs)
@@ -62,7 +65,7 @@ def drawBoard(screen, gs):
             screen.blit(square_surface,p.Rect(sq*SQ_SIZE,row*SQ_SIZE,SQ_SIZE,SQ_SIZE))
             
             # move to next square if no text entry
-            if gs.board[row][sq] == "__":
+            if gs.board[row][sq][1] == '_':
                 continue
             # set font for text
             font = p.font.SysFont("Helvitca",SQ_SIZE, True, False)
