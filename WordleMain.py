@@ -32,13 +32,15 @@ def main():
             #check if player has quit wuith the close button
             if e.type == p.QUIT:
                 running = False
+            elif e.type == p.KEYDOWN:
+                gs.enterLetter(e.unicode)
         # Set max FPS
         clock.tick(MAX_FPS)
         drawBoard(screen, gs)
         #display the screen as it is now
         p.display.flip()
 
-
+# display current board state
 def drawBoard(screen, gs):
     #colors of backgound for squares: white for initial color, grey for letter not in word, yellow for wrong place, green for correct letter and position
     global colors
@@ -65,10 +67,10 @@ def drawBoard(screen, gs):
             # set font for text
             font = p.font.SysFont("Helvitca",SQ_SIZE, True, False)
             # create text that will be displayed
-            textObject = font.render(gs.board[row][sq][1].upper(),0, p.Color("Black"))
+            text_object = font.render(gs.board[row][sq][1].upper(),0, p.Color("Black"))
             # create rect on appropriate square and center it in that square
-            textLocation = p.Rect(sq*SQ_SIZE,row*SQ_SIZE,SQ_SIZE,SQ_SIZE).move(SQ_SIZE/2 - textObject.get_width()/2, SQ_SIZE/2 - textObject.get_height()/2)
-            screen.blit(textObject,textLocation)
+            text_location = p.Rect(sq*SQ_SIZE,row*SQ_SIZE,SQ_SIZE,SQ_SIZE).move(SQ_SIZE/2 - text_object.get_width()/2, SQ_SIZE/2 - text_object.get_height()/2)
+            screen.blit(text_object,text_location)
 
 
     
