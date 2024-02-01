@@ -17,6 +17,7 @@ class GameState():
         self.board[self.current_row][self.current_sq][1] = key_pressed
         self.current_sq += 1
     
+    # when backspace is pressed
     def deleteLetter(self):
         # if no letters in cureent row then do nothing
         if self.current_sq == 0:
@@ -24,4 +25,39 @@ class GameState():
         # go back a square and make it blank
         self.current_sq -=1
         self.board[self.current_row][self.current_sq][1] = '_'
+    
+    # when enter is pressed
+    def enterWord(self):
+        # if word is not correct amount of letters theb cannot submit word
+        if self.current_sq< len(self.board[0]):
+            print(self.current_sq)
+            return
+        # will contain letters from secret words that are not correct in submitted word to check if submitted word has correct letters but wrong position later
+        unused_letters = {}
+        for sq in range(len(self.board[0])):
+            # is coreect so change background to color that represents that
+            if self.board[self.current_row][sq][1] == self.secret_word[sq]:
+                self.board[self.current_row][sq][0] = 'c'
+            else:
+                # submitted letter does not match letter in secret word at same position
+                unused_letters[self.secret_word[sq]] = unused_letters.get(self.secret_word[sq], 0) + 1
         
+        # check if letter in submiteed word is in secret word but wrong position or not at all in word
+        for sq in range(len(self.board[0])):
+            # if letter has correct color background then skip
+            if self.board[self.current_row][sq][0] != '_':
+                continue
+
+            if unused_letters.get(self.board[self.current_row][sq][1], 0) > 0:
+                # correct letter but wrong position so give that background color and mark that letter is used from that secret word
+                self.board[self.current_row][sq][0] = 'p'
+                unused_letters[self.board[self.current_row][sq][1]] -= 1
+            else:
+                # letter not in secret word or has already been accounted for
+                self.board[self.current_row][sq][0] = 'w'
+        
+        # start at next row and first square
+        self.current_row += 1
+        self.current_sq = 0
+
+        return

@@ -35,6 +35,9 @@ def main():
             elif e.type == p.KEYDOWN:
                 if e.key == p.K_BACKSPACE:
                     gs.deleteLetter()
+                elif e.key == p.K_RETURN:
+                    
+                    gs.enterWord()
                 else:
                     gs.enterLetter(e.unicode)
         # Set max FPS
@@ -47,7 +50,7 @@ def main():
 def drawBoard(screen, gs):
     #colors of backgound for squares: white for initial color, grey for letter not in word, yellow for wrong place, green for correct letter and position
     global colors
-    colors = {"_": "white", "a": "gray", "y": "yellow", "e": "springgreen4"}
+    colors = {"_": "white", "w": "gray", "p": "yellow", "c": "springgreen4"}
     
     # loads in image of entry square
     square_surface = p.transform.scale(p.image.load("images/blankSquare.png"), (SQ_SIZE, SQ_SIZE))
