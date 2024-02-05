@@ -1,4 +1,8 @@
 import random
+# will hold all the words in the file
+setOfAllWords = set()
+
+
 class GameState():
     def __init__(self, SQ_NUM = 5, ROW_NUM = 6):
         self.board = [[['_', '_'] for _ in range(SQ_NUM)] for _ in range(ROW_NUM)]
@@ -30,8 +34,10 @@ class GameState():
     def enterWord(self):
         # if word is not correct amount of letters theb cannot submit word
         if self.current_sq< len(self.board[0]):
-            print(self.current_sq)
-            return
+        
+            return True
+        if not self.isValidWord():
+            return False
         # will contain letters from secret words that are not correct in submitted word to check if submitted word has correct letters but wrong position later
         unused_letters = {}
         for sq in range(len(self.board[0])):
@@ -60,10 +66,31 @@ class GameState():
         self.current_row += 1
         self.current_sq = 0
 
-        return
+        return True
+    # check if word is in list
+    def isValidWord(self):
+        word = ""
+        for sq in self.board[self.current_row]:
+            word += sq[1]
+        return word in setOfAllWords
     # randomly select the secret word for player to guess
     def chooseWord(self):
-        f = open("words.txt", 'r')
 
-        words = f.read().splitlines()
-        return random.choice(words)
+        return random.choice(tuple(setOfAllWords))
+        
+        
+    
+
+def getWords(SQ_NUM):
+    
+    global setOfAllWords
+    setOfAllWords = set()
+    f = open("words.txt", 'r')
+    # read entire file and then split it by \n into a list
+    for word in f.read().splitlines():
+        # if word is correct length then add it to the set
+        if len(word) == SQ_NUM:
+            setOfAllWords.add(word)
+    f.close()
+    
+        

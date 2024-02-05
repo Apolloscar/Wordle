@@ -12,7 +12,7 @@ SQ_SIZE = 100
 WIDTH, HEIGHT = SQ_NUM*SQ_SIZE, ROW_NUM*SQ_SIZE
 
 MAX_FPS = 15
-
+WordleEngine.getWords(SQ_NUM)
 def main():
     #set the size of the display window
     screen = p.display.set_mode((WIDTH,HEIGHT))
