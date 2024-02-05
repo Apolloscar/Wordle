@@ -1,8 +1,8 @@
-
+import random
 class GameState():
     def __init__(self, SQ_NUM = 5, ROW_NUM = 6):
         self.board = [[['_', '_'] for _ in range(SQ_NUM)] for _ in range(ROW_NUM)]
-        self.secret_word = "paris"
+        self.secret_word = self.chooseWord()
         self.current_row = 0
         self.current_sq = 0
 
@@ -61,3 +61,9 @@ class GameState():
         self.current_sq = 0
 
         return
+    # randomly select the secret word for player to guess
+    def chooseWord(self):
+        f = open("words.txt", 'r')
+
+        words = f.read().splitlines()
+        return random.choice(words)
