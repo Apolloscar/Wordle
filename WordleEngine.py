@@ -9,6 +9,7 @@ class GameState():
         self.secret_word = self.chooseWord()
         self.current_row = 0
         self.current_sq = 0
+        self.game_over = False
 
     # when a character outside of backspace is pressed
     def enterLetter(self, key_pressed):
@@ -62,10 +63,15 @@ class GameState():
                 # letter not in secret word or has already been accounted for
                 self.board[self.current_row][sq][0] = 'w'
         
+        
+        # all guesses used so end game
+        if self.current_row +1 >= len(self.board) or self.isCorrectWord():
+            self.game_over = True
+            return True
+
         # start at next row and first square
         self.current_row += 1
         self.current_sq = 0
-
         return True
     # check if word is in list
     def isValidWord(self):
@@ -78,6 +84,12 @@ class GameState():
 
         return random.choice(tuple(setOfAllWords))
         
+    def isCorrectWord(self):
+        for sq in self.board[self.current_row]:
+            if sq[0] != 'c':
+                return False
+        return True
+
         
     
 
