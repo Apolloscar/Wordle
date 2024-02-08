@@ -1,6 +1,6 @@
 import pygame as p
 import WordleEngine
-
+import time
 
 p.init()
 
@@ -37,7 +37,7 @@ def main():
             if e.type == p.QUIT:
                 running = False
             elif e.type == p.KEYDOWN:
-                # ` is preesed to make a new game
+                # ` is pressed to make a new game
                 if e.key == p.K_BACKQUOTE:
                     gs = WordleEngine.GameState(SQ_NUM, ROW_NUM)
                     
@@ -46,7 +46,10 @@ def main():
                     gs.deleteLetter()
                 # enter key is pressed, submit word
                 elif e.key == p.K_RETURN and not gs.game_over:
-                    gs.enterWord()
+                    # returns false if not a real word
+                    if not gs.enterWord():
+                        notAWordNotice(screen)
+
                 elif not gs.game_over:
                     gs.enterLetter(e.unicode)
         # Set max FPS
@@ -111,7 +114,16 @@ def gameOverScreen(screen,gs):
         screen.blit(text_object_1,text_location_1)
         screen.blit(text_object_2,text_location_2)
 
-    # create rect on appropriate square and center it in that square
+# message displayed when not a real word is entered
+def notAWordNotice(screen):
+    font = p.font.SysFont("Helvitca",SQ_SIZE//2, True, False)
+    text_object = font.render("Word Not In Vocab",0, p.Color("Green"))
+    text_location = p.Rect(0,0,SQ_SIZE*SQ_NUM,SQ_SIZE*ROW_NUM).move(SQ_SIZE*SQ_NUM/2 - text_object.get_width()/2, SQ_SIZE*ROW_NUM/2 - text_object.get_height()/2)
+    p.draw.rect(screen,p.Color("Blue"),[SQ_SIZE*SQ_NUM/2 - text_object.get_width()/2, SQ_SIZE*ROW_NUM/2 - text_object.get_height()/2,text_object.get_width(), text_object.get_height()])
+    screen.blit(text_object,text_location)
+    p.display.flip()
+    time.sleep(1)
+   
     
 
 
