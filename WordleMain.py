@@ -39,7 +39,8 @@ def main():
             elif e.type == p.KEYDOWN:
                 # ` is preesed to make a new game
                 if e.key == p.K_BACKQUOTE:
-                    return
+                    gs = WordleEngine.GameState(SQ_NUM, ROW_NUM)
+                    
                 # backspace key is pressed, delete character
                 elif e.key == p.K_BACKSPACE and not gs.game_over:
                     gs.deleteLetter()
