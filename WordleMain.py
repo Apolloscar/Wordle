@@ -95,13 +95,23 @@ def gameOverScreen(screen,gs):
     font = p.font.SysFont("Helvitca",SQ_SIZE//2, True, False)
     # create text that will be displayed
     if gs.isCorrectWord():
-        text_object = font.render("You Win",0, p.Color("Red"))
+        text_object = font.render("You Win",0, p.Color("Green"))
+        text_location = p.Rect(0,0,SQ_SIZE*SQ_NUM,SQ_SIZE*ROW_NUM).move(SQ_SIZE*SQ_NUM/2 - text_object.get_width()/2, SQ_SIZE*ROW_NUM/2 - text_object.get_height()/2)
+        p.draw.rect(screen,p.Color("Blue"),[SQ_SIZE*SQ_NUM/2 - text_object.get_width()/2, SQ_SIZE*ROW_NUM/2 - text_object.get_height()/2,text_object.get_width(), text_object.get_height()])
+        screen.blit(text_object,text_location)
     else:
-        text_object = font.render("You Lose\nWord is " + gs.secret_word.upper(),0, p.Color("Red"))
+        text_object_1 = font.render("You Lose",0, p.Color("Green"))
+        text_location_1 = p.Rect(0,0,SQ_SIZE*SQ_NUM,SQ_SIZE*ROW_NUM).move(SQ_SIZE*SQ_NUM/2 - text_object_1.get_width()/2, SQ_SIZE*ROW_NUM/2 - text_object_1.get_height()/2)
+        text_object_2 = font.render("Word is " + gs.secret_word.upper(),0, p.Color("Green"))
+        text_location_2 = p.Rect(0,0,SQ_SIZE*SQ_NUM,SQ_SIZE*ROW_NUM).move(SQ_SIZE*SQ_NUM/2 - text_object_2.get_width()/2, SQ_SIZE*ROW_NUM/2 - text_object_2.get_height()/2 + text_object_1.get_height())
+        
+        p.draw.rect(screen,p.Color("Blue"),[min(SQ_SIZE*SQ_NUM/2 - text_object_1.get_width()/2, SQ_SIZE*SQ_NUM/2 - text_object_2.get_width()/2),SQ_SIZE*ROW_NUM/2 - text_object_1.get_height()/2, max(text_object_1.get_width(), text_object_2.get_width()), text_object_1.get_height()+text_object_2.get_height()])
+        
+        screen.blit(text_object_1,text_location_1)
+        screen.blit(text_object_2,text_location_2)
 
     # create rect on appropriate square and center it in that square
-    text_location = p.Rect(0,0,SQ_SIZE*SQ_NUM,SQ_SIZE*ROW_NUM).move(SQ_SIZE*SQ_NUM/2 - text_object.get_width()/2, SQ_SIZE*ROW_NUM/2 - text_object.get_height()/2)
-    screen.blit(text_object,text_location)
+    
 
 
     
