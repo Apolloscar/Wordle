@@ -13,6 +13,7 @@ WIDTH, HEIGHT = SQ_NUM*SQ_SIZE, ROW_NUM*SQ_SIZE
 
 MAX_FPS = 15
 
+
 # organize words in file source to have appropriate words
 WordleEngine.getWords(SQ_NUM)
 
@@ -30,6 +31,8 @@ def main():
 
     #continue running game until it is quitted
     running = True
+    # get curreent time for length that messages should be displayed
+    start_time = 0
     while running:
         #check for possible events player makes
         for e in p.event.get():
@@ -48,14 +51,19 @@ def main():
                 elif e.key == p.K_RETURN and not gs.game_over:
                     # returns false if not a real word
                     if not gs.enterWord():
-                        notAWordNotice(screen)
+                        # time when message starts to show up
+                        start_time =  time.time()
+                    
+                    
 
                 elif not gs.game_over:
                     gs.enterLetter(e.unicode)
         # Set max FPS
         clock.tick(MAX_FPS)
         drawBoard(screen, gs)
-
+        # word only shows up for a few seconds
+        if time.time() - start_time < 3:
+            notAWordNotice(screen)
         if gs.game_over:
             gameOverScreen(screen, gs)
         #display the screen as it is now
